@@ -67,3 +67,6 @@ pares:
 
 impares:
     .byte 0x55
+
+
+.section .note.GNU-stack

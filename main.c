@@ -10,8 +10,8 @@ void mostrarMenu();
 void leerOpcion(int *opcion);
 void ejecutarSecuenciaAutoFantastico();
 void ejecutarSecuenciaElChoque();
-void ejecutarSecuenciaAdicional1();
-void ejecutarSecuenciaAdicional2();
+// void ejecutarSecuenciaAdicional1();
+// void ejecutarSecuenciaAdicional2();
 void leerPassword(char *password);
 int compararPassword(const char *passwordIngresada, const char *passwordCorrecta);
 void retardo(unsigned long int *a);
@@ -208,54 +208,54 @@ void ejecutarSecuenciaElChoque() {
         }
 }
 
-void ejecutarSecuenciaAdicional1() {
-    unsigned long int timePrendeApaga = 500; // Tiempo de retardo inicial en milisegundos
-    unsigned char todosEncendidos = 0xFF; // Todos los LEDs encendidos (binario: 11111111)
-    unsigned char todosApagados = 0x00;   // Todos los LEDs apagados (binario: 00000000)
+// void ejecutarSecuenciaAdicional1() {
+//     unsigned long int timePrendeApaga = 500; // Tiempo de retardo inicial en milisegundos
+//     unsigned char todosEncendidos = 0xFF; // Todos los LEDs encendidos (binario: 11111111)
+//     unsigned char todosApagados = 0x00;   // Todos los LEDs apagados (binario: 00000000)
     
-    // Prender todos los LEDs
-    display_binary(todosEncendidos);
-    Leds(todosEncendidos);
-    retardo(&timePrendeApaga); // Espera un momento
+//     // Prender todos los LEDs
+//     display_binary(todosEncendidos);
+//     Leds(todosEncendidos);
+//     retardo(&timePrendeApaga); // Espera un momento
     
-    // Apagar todos los LEDs
-    display_binary(todosApagados);
-    Leds(todosApagados);
-    retardo(&timePrendeApaga); // Espera un momento
-}
+//     // Apagar todos los LEDs
+//     display_binary(todosApagados);
+//     Leds(todosApagados);
+//     retardo(&timePrendeApaga); // Espera un momento
+// }
 
-void ejecutarSecuenciaAdicional2() {
+// void ejecutarSecuenciaAdicional2() {
 
-    unsigned long int speed = 500;
-    unsigned char pares[] = { 0xAA }; // 0b10101010: LEDs pares encendidos
-    unsigned char impares[] = { 0x55 }; // 0b01010101: LEDs impares encendidos
+//     unsigned long int speed = 500;
+//     unsigned char pares[] = { 0xAA }; // 0b10101010: LEDs pares encendidos
+//     unsigned char impares[] = { 0x55 }; // 0b01010101: LEDs impares encendidos
 
-    printf("\t |SECUENCIA PARES E IMPARES|\n\n");
-    printf("Presione E para volver al menú principal\n\n\n");
-    printf("\tDelay: %ld ms\t", speed);
-    printf("\n\n");
+//     printf("\t |SECUENCIA PARES E IMPARES|\n\n");
+//     printf("Presione E para volver al menú principal\n\n\n");
+//     printf("\tDelay: %ld ms\t", speed);
+//     printf("\n\n");
     
-    // Encender LEDs pares
-    printf("Encendiendo LEDs pares...\n");
-    for (int i = 0; i < 1; ++i) {
-        display_binary(pares[i]);
-        Leds(pares[i]);
-        retardo(&speed); // Espera un momento
-    }
+//     // Encender LEDs pares
+//     printf("Encendiendo LEDs pares...\n");
+//     for (int i = 0; i < 1; ++i) {
+//         display_binary(pares[i]);
+//         Leds(pares[i]);
+//         retardo(&speed); // Espera un momento
+//     }
     
-    // Apagar LEDs
-    apagarLuces();
-    retardo(&speed); // Espera un momento
+//     // Apagar LEDs
+//     apagarLuces();
+//     retardo(&speed); // Espera un momento
     
-    // Encender LEDs impares
-    printf("Encendiendo LEDs impares...\n");
-    for (int i = 0; i < 1; ++i) {
-        display_binary(impares[i]);
-        Leds(impares[i]);
-        retardo(&speed); // Espera un momento
-    }
+//     // Encender LEDs impares
+//     printf("Encendiendo LEDs impares...\n");
+//     for (int i = 0; i < 1; ++i) {
+//         display_binary(impares[i]);
+//         Leds(impares[i]);
+//         retardo(&speed); // Espera un momento
+//     }
     
-    // Apagar LEDs al final
-    apagarLuces();
+//     // Apagar LEDs al final
+//     apagarLuces();
 
-}
+// }
