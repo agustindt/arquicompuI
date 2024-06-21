@@ -10,8 +10,8 @@ void mostrarMenu();
 void leerOpcion(int *opcion);
 void ejecutarSecuenciaAutoFantastico();
 void ejecutarSecuenciaElChoque();
-// void ejecutarSecuenciaAdicional1();
-// void ejecutarSecuenciaAdicional2();
+extern void ejecutarSecuenciaAdicional1();
+extern void ejecutarSecuenciaAdicional2();
 void leerPassword(char *password);
 int compararPassword(const char *passwordIngresada, const char *passwordCorrecta);
 void retardo(unsigned long int *a);
@@ -28,14 +28,16 @@ unsigned long int velocidadActual = 1000;
 const unsigned char led[] = {14, 15, 18, 23, 24, 25, 8, 7}; // Pines GPIO a los cuales están conectados los LEDs
 const int numPines = 8; // Número de pines GPIO utilizados
 
-// Función para mostrar el valor de i en binario
-void display_binary(int i) { 
+// Función para mostrar el valor de i en binario en una sola línea
+void display_binary(int i) {
     int t;
     for (t = 128; t > 0; t = t / 2) {
-        if (i & t) printf("* ");
-        else printf("");   
-        printf("\n");
+        if (i & t)
+            printf("* ");
+        else
+            printf("  ");
     }
+    printf("\n");
 }
 
 int main() {
@@ -167,95 +169,88 @@ void configurarPines() {
 }
 
 void ejecutarSecuenciaAutoFantastico() {  
-   unsigned long int timeAuto=500;  // Tiempo de retardo inicial en milisegundos
-    unsigned char output, output1;  // Un entero de 8 bits sin signo (rango de 0 a 255)
-    int v = 1;
+    unsigned long int timeAuto = 500;  // Tiempo de retardo inicial en milisegundos
+    unsigned char output = 0x80;
     
-        // Ida
-        output = 0x80;
-        output1 = 0x02;
-        for (int i = 0; i < 8; i++) {
-            display_binary(output);
-            Leds(output);
-            retardo(&timeAuto); // Espera un momento
-            output = output >> 1; // ">>" desplazamiento a la derecha
-        }
-        
-        for (int i = 0; i < 7; i++) {
-            display_binary(output1);
-            Leds(output1);
-            retardo(&timeAuto); // Espera un momento
-            output1 = output1 << 1; // "<<" desplazamiento a la izquierda
-        }
+    // Ida
+    for (int i = 0; i < 8; i++) {
+        display_binary(output);
+        Leds(output);
+        retardo(&timeAuto); // Espera un momento
+        output = output >> 1; // Desplazamiento a la derecha
+    }
+    
+    // Vuelta
+    for (int i = 0; i < 7; i++) {
+        display_binary(output);
+        Leds(output);
+        retardo(&timeAuto); // Espera un momento
+        output = output << 1; // Desplazamiento a la izquierda
+    }
 }
 
 void ejecutarSecuenciaElChoque() {
-     unsigned long int speed=500;
+    unsigned long int speed = 500;
     unsigned char tabla[] = { 0x81, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0x81 };
 
     printf("\t |EL CHOQUE|\n\n");
     printf("Presione E para volver al menu principal\n\n\n");
-    printf("\tDelay: %ld ms\t", speed);
+    printf("\tDelay: %ld ms\t\n", speed);
     printf("\n\n");
-    int v = 1;
     
-        for (int i = 0; i < 8; ++i) {
-           
-            display_binary(tabla[i]);
-            Leds(tabla[i]);
-            retardo(&speed); // Espera un momento
-            
-        }
+    for (int i = 0; i < 8; ++i) {
+        display_binary(tabla[i]);
+        Leds(tabla[i]);
+        retardo(&speed); // Espera un momento
+    }
 }
 
-// void ejecutarSecuenciaAdicional1() {
-//     unsigned long int timePrendeApaga = 500; // Tiempo de retardo inicial en milisegundos
-//     unsigned char todosEncendidos = 0xFF; // Todos los LEDs encendidos (binario: 11111111)
-//     unsigned char todosApagados = 0x00;   // Todos los LEDs apagados (binario: 00000000)
-    
-//     // Prender todos los LEDs
-//     display_binary(todosEncendidos);
-//     Leds(todosEncendidos);
-//     retardo(&timePrendeApaga); // Espera un momento
-    
-//     // Apagar todos los LEDs
-//     display_binary(todosApagados);
-//     Leds(todosApagados);
-//     retardo(&timePrendeApaga); // Espera un momento
-// }
 
-// void ejecutarSecuenciaAdicional2() {
+// comentar este void para que funcione el assembly
 
-//     unsigned long int speed = 500;
-//     unsigned char pares[] = { 0xAA }; // 0b10101010: LEDs pares encendidos
-//     unsigned char impares[] = { 0x55 }; // 0b01010101: LEDs impares encendidos
 
-//     printf("\t |SECUENCIA PARES E IMPARES|\n\n");
-//     printf("Presione E para volver al menú principal\n\n\n");
-//     printf("\tDelay: %ld ms\t", speed);
-//     printf("\n\n");
+void ejecutarSecuenciaAdicional1() {
+    unsigned long int timePrendeApaga = 500; // Tiempo de retardo inicial en milisegundos
+    unsigned char todosEncendidos = 0xFF; // Todos los LEDs encendidos (binario: 11111111)
+    unsigned char todosApagados = 0x00;   // Todos los LEDs apagados (binario: 00000000)
     
-//     // Encender LEDs pares
-//     printf("Encendiendo LEDs pares...\n");
-//     for (int i = 0; i < 1; ++i) {
-//         display_binary(pares[i]);
-//         Leds(pares[i]);
-//         retardo(&speed); // Espera un momento
-//     }
+    // Prender todos los LEDs
+    display_binary(todosEncendidos);
+    Leds(todosEncendidos);
+    retardo(&timePrendeApaga); // Espera un momento
     
-//     // Apagar LEDs
-//     apagarLuces();
-//     retardo(&speed); // Espera un momento
-    
-//     // Encender LEDs impares
-//     printf("Encendiendo LEDs impares...\n");
-//     for (int i = 0; i < 1; ++i) {
-//         display_binary(impares[i]);
-//         Leds(impares[i]);
-//         retardo(&speed); // Espera un momento
-//     }
-    
-//     // Apagar LEDs al final
-//     apagarLuces();
+    // Apagar todos los LEDs
+    display_binary(todosApagados);
+    Leds(todosApagados);
+    retardo(&timePrendeApaga); // Espera un momento
+}
 
-// }
+// comentar este void para que funcione el assembly
+
+void ejecutarSecuenciaAdicional2() {
+    unsigned long int speed = 500;
+    unsigned char pares = 0xAA; // 0b10101010: LEDs pares encendidos
+    unsigned char impares = 0x55; // 0b01010101: LEDs impares encendidos
+    
+    printf("\t |SECUENCIA PARES E IMPARES|\n\n");
+    printf("Presione E para volver al menú principal\n\n\n");
+    printf("\tDelay: %ld ms\t\n", speed);
+    printf("\n\n");
+    
+    // Encender LEDs pares
+    display_binary(pares);
+    Leds(pares);
+    retardo(&speed); // Espera un momento
+    
+    // Apagar LEDs
+    apagarLuces();
+    retardo(&speed); // Espera un momento
+    
+    // Encender LEDs impares
+    display_binary(impares);
+    Leds(impares);
+    retardo(&speed); // Espera un momento
+    
+    // Apagar LEDs al final
+    apagarLuces();
+}
