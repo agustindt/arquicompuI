@@ -1,90 +1,78 @@
-; Archivo: menu.s
+.global ejecutarSecuenciaAdicional1
+.global ejecutarSecuenciaAdicional2
 
-section .data
-    timePrendeApaga equ 500            ; Tiempo de retardo inicial en milisegundos
-    todosEncendidos equ 0xFF           ; Todos los LEDs encendidos (binario: 11111111)
-    todosApagados equ 0x00             ; Todos los LEDs apagados (binario: 00000000)
-    speed equ 500                      ; Tiempo de retardo inicial en milisegundos
-    pares equ 0xAA                     ; 0b10101010: LEDs pares encendidos
-    impares equ 0x55                   ; 0b01010101: LEDs impares encendidos
+.section .data
+timePrendeApaga:  .word 500
+speed:            .word 500
+todosEncendidos:  .byte 0xFF
+todosApagados:    .byte 0x00
+pares:            .byte 0xAA
+impares:          .byte 0x55
 
-section .text
-    global ejecutarSecuenciaAdicional1
-    global ejecutarSecuenciaAdicional2
-    extern display_binary, Leds, retardo, apagarLuces
+.section .text
 
 ejecutarSecuenciaAdicional1:
-    ; Prender todos los LEDs
-    movzx eax, byte todosEncendidos
-    push eax
-    call display_binary
-    add esp, 4
-    
-    movzx eax, byte todosEncendidos
-    push eax
-    call Leds
-    add esp, 4
-    
-    push dword timePrendeApaga
-    call retardo
-    add esp, 4
-    
-    ; Apagar todos los LEDs
-    movzx eax, byte todosApagados
-    push eax
-    call display_binary
-    add esp, 4
-    
-    movzx eax, byte todosApagados
-    push eax
-    call Leds
-    add esp, 4
-    
-    push dword timePrendeApaga
-    call retardo
-    add esp, 4
-    
-    ret
+    push {r4, lr}                // Guardar registros
+
+    // Prender todos los LEDs
+    ldr r0, =todosEncendidos
+    ldrb r0, [r0]
+    bl display_binary
+    ldr r0, =todosEncendidos
+    ldrb r0, [r0]
+    bl Leds
+
+    // Retardo
+    ldr r0, =timePrendeApaga     // Obtener la dirección de timePrendeApaga
+    bl retardo
+
+    // Apagar todos los LEDs
+    ldr r0, =todosApagados
+    ldrb r0, [r0]
+    bl display_binary
+    ldr r0, =todosApagados
+    ldrb r0, [r0]
+    bl Leds
+
+    // Retardo
+    ldr r0, =timePrendeApaga     // Obtener la dirección de timePrendeApaga
+    bl retardo
+
+    pop {r4, lr}                 // Restaurar registros
+    bx lr
 
 ejecutarSecuenciaAdicional2:
-    ; Encender LEDs pares
-    movzx eax, byte pares
-    push eax
-    call display_binary
-    add esp, 4
-    
-    movzx eax, byte pares
-    push eax
-    call Leds
-    add esp, 4
-    
-    push dword speed
-    call retardo
-    add esp, 4
-    
-    ; Apagar LEDs
-    call apagarLuces
-    
-    push dword speed
-    call retardo
-    add esp, 4
-    
-    ; Encender LEDs impares
-    movzx eax, byte impares
-    push eax
-    call display_binary
-    add esp, 4
-    
-    movzx eax, byte impares
-    push eax
-    call Leds
-    add esp, 4
-    
-    push dword speed
-    call retardo
-    add esp, 4
-    
-    ; Apagar LEDs al final
-    call apagarLuces
-    
-    ret
+    push {r4, lr}                // Guardar registros
+
+    // Encender LEDs pares
+    ldr r0, =pares
+    ldrb r0, [r0]
+    bl display_binary
+    ldr r0, =pares
+    ldrb r0, [r0]
+    bl Leds
+
+    // Retardo
+    ldr r0, =speed               // Obtener la dirección de speed
+    bl retardo
+
+    // Apagar LEDs
+    bl apagarLuces
+
+    // Encender LEDs impares
+    ldr r0, =impares
+    ldrb r0, [r0]
+    bl display_binary
+    ldr r0, =impares
+    ldrb r0, [r0]
+    bl Leds
+
+    // Retardo
+    ldr r0, =speed               // Obtener la dirección de speed
+    bl retardo
+
+    // Apagar LEDs
+    bl apagarLuces
+
+    pop {r4, lr}                 // Restaurar registros
+    bx lr

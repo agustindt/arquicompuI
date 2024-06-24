@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <unistd.h>
-#include "EasyPIO.h" // Incluir EasyPIO
+#include "EasyPIO.h"
 
 // Declaraciones de funciones
 void mostrarMenu();
 void leerOpcion(int *opcion);
 void ejecutarSecuenciaAutoFantastico();
 void ejecutarSecuenciaElChoque();
+// Declaraciones de funciones Assembly
 extern void ejecutarSecuenciaAdicional1();
 extern void ejecutarSecuenciaAdicional2();
 void leerPassword(char *password);
@@ -35,9 +36,8 @@ void display_binary(int i) {
         if (i & t)
             printf("* ");
         else
-            printf("  ");
+            printf("_");
     }
-    printf("\n");
 }
 
 int main() {
@@ -135,7 +135,6 @@ void retardo(unsigned long int *a) {
     usleep(*a * 1000);
 }
 
-
 int Leds(int num) {
     int i, numval;
     for (i = 0; i < 8; i++) {
@@ -206,51 +205,46 @@ void ejecutarSecuenciaElChoque() {
 }
 
 
-// comentar este void para que funcione el assembly
+// void ejecutarSecuenciaAdicional1() {
+//     unsigned long int timePrendeApaga = 500; // Tiempo de retardo inicial en milisegundos
+//     unsigned char todosEncendidos = 0xFF; // Todos los LEDs encendidos (binario: 11111111)
+//     unsigned char todosApagados = 0x00;   // Todos los LEDs apagados (binario: 00000000)
+    
+//     // Prender todos los LEDs
+//     display_binary(todosEncendidos);
+//     Leds(todosEncendidos);
+//     retardo(&timePrendeApaga); // Espera un momento
+    
+//     // Apagar todos los LEDs
+//     display_binary(todosApagados);
+//     Leds(todosApagados);
+//     retardo(&timePrendeApaga); // Espera un momento
+// }
 
-
-void ejecutarSecuenciaAdicional1() {
-    unsigned long int timePrendeApaga = 500; // Tiempo de retardo inicial en milisegundos
-    unsigned char todosEncendidos = 0xFF; // Todos los LEDs encendidos (binario: 11111111)
-    unsigned char todosApagados = 0x00;   // Todos los LEDs apagados (binario: 00000000)
+// void ejecutarSecuenciaAdicional2() {
+//     unsigned long int speed = 500;
+//     unsigned char pares = 0xAA; // 0b10101010: LEDs pares encendidos
+//     unsigned char impares = 0x55; // 0b01010101: LEDs impares encendidos
     
-    // Prender todos los LEDs
-    display_binary(todosEncendidos);
-    Leds(todosEncendidos);
-    retardo(&timePrendeApaga); // Espera un momento
+//     printf("\t |SECUENCIA PARES E IMPARES|\n\n");
+//     printf("Presione E para volver al menú principal\n\n\n");
+//     printf("\tDelay: %ld ms\t\n", speed);
+//     printf("\n\n");
     
-    // Apagar todos los LEDs
-    display_binary(todosApagados);
-    Leds(todosApagados);
-    retardo(&timePrendeApaga); // Espera un momento
-}
-
-// comentar este void para que funcione el assembly
-
-void ejecutarSecuenciaAdicional2() {
-    unsigned long int speed = 500;
-    unsigned char pares = 0xAA; // 0b10101010: LEDs pares encendidos
-    unsigned char impares = 0x55; // 0b01010101: LEDs impares encendidos
+//     // Encender LEDs pares
+//     display_binary(pares);
+//     Leds(pares);
+//     retardo(&speed); // Espera un momento
     
-    printf("\t |SECUENCIA PARES E IMPARES|\n\n");
-    printf("Presione E para volver al menú principal\n\n\n");
-    printf("\tDelay: %ld ms\t\n", speed);
-    printf("\n\n");
+//     // Apagar LEDs
+//     apagarLuces();
+//     retardo(&speed); // Espera un momento
     
-    // Encender LEDs pares
-    display_binary(pares);
-    Leds(pares);
-    retardo(&speed); // Espera un momento
+//     // Encender LEDs impares
+//     display_binary(impares);
+//     Leds(impares);
+//     retardo(&speed); // Espera un momento
     
-    // Apagar LEDs
-    apagarLuces();
-    retardo(&speed); // Espera un momento
-    
-    // Encender LEDs impares
-    display_binary(impares);
-    Leds(impares);
-    retardo(&speed); // Espera un momento
-    
-    // Apagar LEDs al final
-    apagarLuces();
-}
+//     // Apagar LEDs al final
+//     apagarLuces();
+// }
